@@ -11,6 +11,7 @@ export const Container = StyleSheet.create({
             fontSize: 33,
             marginBottom: 50,
             color:"#6558f5",
+            top: 10
         },
         InputArea: {
             /*flex: 1,*/
@@ -74,5 +75,17 @@ export const Container = StyleSheet.create({
             fontSize: 45,
             flexDirection: "row",
         },
+        contentAlert:{
+            top: 5,
+            marginTop: 20,
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+        },
+        warningAlert:{
+            paddingLeft: 10,
+            color: "red",
+            fontSize: 16
+        }
     }
 )

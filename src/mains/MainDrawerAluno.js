@@ -5,10 +5,21 @@ import { TouchableRipple, Switch, Drawer } from 'react-native-paper';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
+import firebase from "../config/firebaseconfig"
+
 import Cartao from '../screens/Aluno/Cartao';
 import Perfil from '../screens/Aluno/Perfil';
 
 const Draweer = createDrawerNavigator();
+
+
+ /*function logout() {
+  firebase.auth().signOut().then(() => {
+    props.navigation.navigate('Login')
+  }).catch((error) => {
+    // An error happened.
+  });
+ }*/
 
 function DrawerRoutes() {
   return (      
@@ -59,7 +70,11 @@ function CustomDrawerContent(props) {
               <Icon name="exit-to-app" size={35} color='#6558f5'/>
             )}
             onPress={() => {
-            props.navigation.navigate('Login');
+              firebase.auth().signOut().then(() => {
+                props.navigation.navigate('Login')
+              }).catch((error) => {
+                // An error happened.
+              });;
             }}
           />
       </Drawer.Section>  
