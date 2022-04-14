@@ -20,9 +20,8 @@ export default function Perfil({navigation}){
 const [dados, setDados] = useState([]);
 const database = firebase.firestore();
 
- 
 useEffect(() => {
-  database.collection("Perfil").onSnapshot((query) => {
+  database.collection(firebase.auth().currentUser.uid).onSnapshot((query) => {
     const list = [];
     query.forEach((doc) => {
       list.push({ ...doc.data(), id: doc.id });
@@ -73,10 +72,10 @@ useEffect(() => {
             </View>
             <View style={Container.info}>
            
-                  <Text style={Container.Texto}>Faculdade: <TextInput style={Container.Input}>{item.faculdade}</TextInput></Text>
-                  <Text style={Container.Texto}>Curso: <TextInput style={Container.Input}>{item.curso}</TextInput></Text>
-                  <Text style={Container.Texto}>Período: <TextInput style={Container.Input}>{item.periodo}</TextInput></Text>
-                  <Text style={Container.Texto}>Dias de uso: <TextInput style={Container.Input}>{item.diasdeuso}</TextInput></Text>
+                  <Text style={Container.Texto}>Faculdade: <Text style={Container.Input}>{item.faculdade}</Text></Text>
+                  <Text style={Container.Texto}>Curso: <Text style={Container.Input}>{item.curso}</Text></Text>
+                  <Text style={Container.Texto}>Período: <Text style={Container.Input}>{item.periodo}</Text></Text>
+                  <Text style={Container.Texto}>Dias de uso: <Text style={Container.Input}>{item.diasdeuso}</Text></Text>
                
 
            

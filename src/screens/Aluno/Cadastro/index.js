@@ -1,13 +1,8 @@
 import {React, useState} from "react";
-
 import { Container } from './style';
-import { View, TextInput, TouchableOpacity, Text,  Keyboard, Pressable, Alert, ScrollView, Label, Input,  KeyboardAvoidingView, } from "react-native";
-import Onibus from '../../../img/Onibus.svg';
+import { View, TextInput, TouchableOpacity, Text, Keyboard, Pressable, Alert, ScrollView, KeyboardAvoidingView } from "react-native";
 import { CheckBox } from "react-native-elements";
-
 import firebase from "../../../config/firebaseconfig"
-
-
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 export default function Cadastro({navigation}) {
@@ -16,12 +11,72 @@ export default function Cadastro({navigation}) {
     
     const[email, setEmail] = useState("");
     const[password, setPassword] = useState("");
-    const [errorRegister, setErrorRegister] = useState("")
+    const [cpass, setCpass] = useState(null)
+    const[errorRegister, setErrorRegister] = useState("")
+    const[nome, setNome] = useState("");
+    const[cidade, setCidade] = useState("");
+    const[faculdade, setFaculdade] = useState("");
+    const[curso, setCurso] = useState("");
+    const[periodo, setPeriodo] = useState("");
 
+    const [segunda, setSegunda] = useState(false);
+    const [terca, setTerca] = useState(false);
+    const [quarta, setQuarta] = useState(false);
+    const [quinta, setQuinta] = useState(false);
+    const [sexta, setSexta] = useState(false);
+
+    const [errorEmail, setErrorEmail] = useState(null)
+    const [errorNome, setErrorNome] = useState(null)
+    const [errorPassword, setErrorPassword] = useState(null)
+    const [errorCPassword, setErrorCPassword] = useState(null)
+    const [errorFaculdade, setErrorFaculdade] = useState(null)
+    const [errorCurso, setErrorCurso] = useState(null)
+    const [errorPeriodo, setErrorPeriodo] = useState(null)
+    const [isLoading, setLoading] = useState(false)
+
+   
+    const validar = () => {
+        let error = false
+        setErrorPeriodo(null)
+        setErrorFaculdade(null)
+        setErrorCurso(null)
+        setErrorNome(null)
+        setErrorEmail(null)
+        setErrorPassword(null)
+        setErrorCPassword(null)
+        const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+        if (!re.test(String(email).toLowerCase())) {
+            setErrorEmail("Preencha o email corretamente")
+            error = true
+        }
+
+       
+        if (password == null && password != cpass) {
+            setErrorPassword("Preencha com uma senha válida")
+            error = true
+        }
+
+        if (password != cpass) {
+            setErrorCPassword("As senhas nao coincidem, tente novamente")
+            error = true
+        }
+
+        return !error
+    }
+ 
     const registerUser = () =>{
         firebase.auth().createUserWithEmailAndPassword(email, password)
             .then((userCredential) => {
                 let user = userCredential.user;
+                database.collection(user.uid).add({
+                    nome: nome,
+                    email: email,
+                    cidade: cidade,
+                    faculdade: faculdade,
+                    curso: curso,
+                    periodo: periodo
+                  })
+                
                 navigation.navigate("Perfil", { idUser: user.uid })
             })
             .catch((error) => {
@@ -31,32 +86,11 @@ export default function Cadastro({navigation}) {
             });
     }
 
-    const[nome, setNome] = useState("");
-    const[cidade, setCidade] = useState("");
-    const[faculdade, setFaculdade] = useState("");
-    const[curso, setCurso] = useState("");
-    const[periodo, setPeriodo] = useState("");
- 
-    function addDados(){
-      database.collection('Perfil').add({
-        nome: nome,
-        email: email,
-        cidade: cidade,
-        faculdade: faculdade,
-        curso: curso,
-        periodo: periodo
-      })
-    }
 
     const clicouLogin = () => {
         navigation.navigate("Login")
     }
 
-    const [segunda, setSegunda] = useState(false);
-    const [terca, setTerca] = useState(false);
-    const [quarta, setQuarta] = useState(false);
-    const [quinta, setQuinta] = useState(false);
-    const [sexta, setSexta] = useState(false);
 
     const clicou = () =>{
         if(segunda === true){
@@ -89,13 +123,29 @@ export default function Cadastro({navigation}) {
                     <TextInput style={Container.input} value={nome} onChangeText={(text) => setNome(text)}/>
 
                     <Text style={Container.Texto}>Email</Text>
-                    <TextInput style={Container.input} type="text" value={email} onChangeText={(text) => setEmail(text)}/>
+                    <TextInput style={Container.input} type="text" value={email} onChangeText={value => {
+                                        setErrorNome(null)
+                                        setEmail(value)
+
+                                    }}
+                                    errorMessage={errorEmail}
+                                    />
 
                     <Text style={Container.Texto}>Senha</Text>
-                    <TextInput style={Container.input} secureTextEntry={true} type="text" value={password} onChangeText={(text) => setPassword(text)}/>
+                    <TextInput style={Container.input} secureTextEntry={true} type="text" value={password} onChangeText={value => {
+                                        setErrorPassword(null)
+                                        setPassword(value)
+                                    }}
+                                    errorMessage={errorPassword}  />
 
                     <Text style={Container.Texto}>Confirmar senha</Text>
-                    <TextInput style={Container.input}  secureTextEntry={true}/>
+                    <TextInput style={Container.input}  secureTextEntry={true} 
+                                    onChangeText={value => {
+
+                                        setErrorCPassword(null)
+                                        setCpass(value)
+                                    }}
+                                    errorMessage={errorCPassword}/>
 
                     <Text style={Container.Texto}>Cidade</Text>
                     <TextInput style={Container.input} value={cidade} onChangeText={(text) => setCidade(text)}/>
@@ -145,7 +195,7 @@ export default function Cadastro({navigation}) {
 
                             <TouchableOpacity
                              style={Container.botao}
-                              onPress={() => { registerUser(), addDados() }}
+                              onPress={() => { registerUser() }}
                               >
                                 <Text style={Container.botaoText}>Cadastrar</Text>
                             </TouchableOpacity>
@@ -155,16 +205,11 @@ export default function Cadastro({navigation}) {
                     <TouchableOpacity style={Container.textoCadastro} onPress={() => {clicouLogin()}}>
                         <Text style={{color: "#6558f5"}}>Já possui uma conta?</Text>
                         <Text style={{fontWeight: "bold", color: "#6558f5"}}> Faça login</Text>
-                    </TouchableOpacity>                
+                    </TouchableOpacity>
+
                 </View>           
             </View>
             </Pressable>
-
-            {/*<View style={Container.LogoBuzz}>
-                <Onibus width="15%" height="45" />
-                <Text style={Container.TextoLogo}>BUZZ</Text>
-            </View>*/}
-
         </ScrollView>
     </View>
     );

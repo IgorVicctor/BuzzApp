@@ -9,6 +9,9 @@ import LoginMotorista from '../screens/Motorista/LoginMotorista';
 import ListaUsuarios from '../screens/Motorista/ListaUsuarios';
 import PerfilMotorista from '../screens/Motorista/PerfilMotorista';
 
+import Perfil from '../screens/Aluno/Perfil';
+
+
 import DrawerRoutesAluno from './MainDrawerAluno';
 import DrawerRoutesMotorista from './MainDrawerMotorista';
 

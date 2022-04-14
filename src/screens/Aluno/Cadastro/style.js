@@ -90,5 +90,16 @@ export const Container = StyleSheet.create(
             fontSize: 45,
             flexDirection: "row",
         },
+        contentAlert:{
+            marginTop: 20,
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+        },
+        warningAlert:{
+            paddingLeft: 10,
+            color: "red",
+            fontSize: 16
+        }
     }
 )

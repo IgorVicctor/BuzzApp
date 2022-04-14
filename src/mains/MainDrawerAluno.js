@@ -70,8 +70,11 @@ function CustomDrawerContent(props) {
               <Icon name="exit-to-app" size={35} color='#6558f5'/>
             )}
             onPress={() => {
-              firebase.auth().signOut().then(() => {
-                props.navigation.navigate('Login')
+              firebase.auth().signOut().then(() => {       
+                props.navigation.reset({
+                  index: 0,
+                  routes: [{ name: "Login" }]
+              })
               }).catch((error) => {
                 // An error happened.
               });;

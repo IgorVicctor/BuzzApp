@@ -42,10 +42,6 @@ function CustomDrawerContent(props) {
             label="Ônibus"
             onPress={() => {}}
           />
-          <DrawerItem
-            label="Alterar dados"
-            onPress={() => {}}
-          />
       </Drawer.Section>
 
       <Drawer.Section title='Preferences'>

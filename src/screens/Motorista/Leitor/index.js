@@ -3,8 +3,8 @@ import { Text, View, StyleSheet, Button, TouchableOpacity } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import Icon from 'react-native-vector-icons/Entypo';
 
-
 export default function Scanner({navigation}) {
+
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [text, setText] = useState('Ainda não scanneado')
@@ -23,9 +23,12 @@ export default function Scanner({navigation}) {
 
   // What happens when we scan the bar code
   const handleBarCodeScanned = ({ type, data }) => {
-    setScanned(true);
+
+    navigation.navigate("ListaUsuarios");
+
     setText(data)
-    console.log('Type: ' + type + '\nData: ' + data)
+    
+    console.log(data)
   };
 
   // Check permissions and return the screens
@@ -54,7 +57,7 @@ export default function Scanner({navigation}) {
       <View style={styles.barcodebox}>
         <BarCodeScanner
           onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-          style={{ height: 400, width: 400 }} />
+          style={{ height: 420, width: 400 }} />
       </View>
       <Text style={styles.maintext}>{text}</Text>
 

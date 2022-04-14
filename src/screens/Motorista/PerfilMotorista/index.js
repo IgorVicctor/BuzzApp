@@ -39,10 +39,10 @@ export default function PerfilMotorista({navigation}){
             {/*<Text style={{color: "#6558f5", textAlign: 'center', bottom: 50, fontSize: 15}}>Centro Universitário de Itajubá - FEPI </Text>*/}
           </View>
             <View style={Container.info}>
-              <Text style={Container.Texto}>Empresa:<TextInput style={Container.Input}>X</TextInput></Text>
-              <Text style={Container.Texto}>Ônibus:<TextInput style={Container.Input}>Y</TextInput></Text>
-              <Text style={Container.Texto}>.. : <TextInput style={Container.Input}>..</TextInput></Text>
-              <Text style={Container.Texto}>Dias de uso:<TextInput style={Container.Input}>Seg/Ter/Qua/Qui/Sex</TextInput></Text>
+              <Text style={Container.Texto}>Empresa:<Text style={Container.Input}>X</Text></Text>
+              <Text style={Container.Texto}>Ônibus:<Text style={Container.Input}>Y</Text></Text>
+              <Text style={Container.Texto}>.. : <Text style={Container.Input}>..</Text></Text>
+              <Text style={Container.Texto}>Dias de uso:<Text style={Container.Input}>Seg/Ter/Qua/Qui/Sex</Text></Text>
             </View>
             
         </ScrollView>
