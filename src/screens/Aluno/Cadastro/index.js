@@ -68,7 +68,7 @@ export default function Cadastro({navigation}) {
         firebase.auth().createUserWithEmailAndPassword(email, password)
             .then((userCredential) => {
                 let user = userCredential.user;
-                database.collection(user.uid).add({
+                database.collection("Usuarios").doc(user.uid).set({
                     nome: nome,
                     email: email,
                     cidade: cidade,
@@ -195,7 +195,7 @@ export default function Cadastro({navigation}) {
 
                             <TouchableOpacity
                              style={Container.botao}
-                              onPress={() => { registerUser() }}
+                              onPress={() => { validar(), registerUser() }}
                               >
                                 <Text style={Container.botaoText}>Cadastrar</Text>
                             </TouchableOpacity>

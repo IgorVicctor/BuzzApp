@@ -24,9 +24,10 @@ function DrawerRoutesDois() {
       }}
       drawerContent={(props) => <CustomDrawerContent {...props} />} initialRouteName="PerfilMotorista" >
 
-        <Draweer.Screen name='Perfil ' component={PerfilMotorista} options={{swipeEnabled: false}}/>
+        <Draweer.Screen name='Perfil ' component={PerfilMotorista} options={{swipeEnabled: false}}/> 
+        <Draweer.Screen name='Usuários' component={ListaUsuarios} options={{swipeEnabled: true}}/> 
         <Draweer.Screen name='Leitor' component={Leitor} options={{swipeEnabled: true}}/> 
-        <Draweer.Screen name='Usuários' component={ListaUsuarios} options={{swipeEnabled: false}}/> 
+        
       </Draweer.Navigator>
   );
 }
@@ -38,10 +39,10 @@ function CustomDrawerContent(props) {
       <DrawerContentScrollView {...props}  >
       <Drawer.Section style={{flex: 1, marginTop: 15, }}>
         <DrawerItemList {...props} />
-          <DrawerItem
+          {/*<DrawerItem
             label="Ônibus"
             onPress={() => {}}
-          />
+          />*/}
       </Drawer.Section>
 
       <Drawer.Section title='Preferences'>

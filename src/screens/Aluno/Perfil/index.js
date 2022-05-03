@@ -5,41 +5,90 @@ import { Container } from './style';
 import Onibus from '../../../img/Onibus.svg';
 import Icon from 'react-native-vector-icons/Entypo';
 
-import ImagePicker from 'react-native-image-picker';
+import Constants from 'expo-constants';
+import * as Permissions from 'expo-permissions';
+import * as ImagePicker from 'expo-image-picker';
 
 import { log } from 'react-native-reanimated';
 
 import firebase from "../../../config/firebaseconfig.js";
 
-export default function Perfil({navigation}){
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage'; 
 
-/*function imagePickerCallback(data){
-  console.log(data)
-}*/
+//import storage from '@react-native-firebase/storage';
+//import firestore from '@react-native-firebase/firestore';
+
+export default function Perfil({navigation}){
 
 const [dados, setDados] = useState([]);
 const database = firebase.firestore();
 
 useEffect(() => {
-  database.collection(firebase.auth().currentUser.uid).onSnapshot((query) => {
-    const list = [];
-    query.forEach((doc) => {
-      list.push({ ...doc.data(), id: doc.id });
-    }); 
-    setDados(list);
+  database
+    .collection("Usuarios")
+    .doc(firebase.auth().currentUser.uid)
+    .get()
+    .then((doc) => {
+      setDados([doc.data()]);
+    });
+}, []);
+
+
+useEffect(() => {
+  (async () => {
+    if (Platform.OS !== 'web') {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== 'granted') {
+        alert('Sorry, we need camera roll permissions to make this work!');
+      }
+    }
+  })();
+}, []);
+
+const pickImage = async () => {
+  let result = await ImagePicker.launchImageLibraryAsync({
+    mediaTypes: ImagePicker.MediaTypeOptions.All,
+    allowsEditing: true,
+    aspect: [4, 3],
+    quality: 1,
   });
-}, [])
 
+  if (!result.cancelled) {
+    const storage = getStorage(); //the storage itself
+    const variavel = ref(storage, firebase.auth().currentUser.uid + '.png'); //how the image will be addressed inside the storage
 
+    //convert image to array of bytes
+    const img = await fetch(result.uri);
+    const bytes = await img.blob();
+
+    await uploadBytes(variavel, bytes); //upload images
+  }
+};
+
+const [url, setUrl] = useState();
+
+  useEffect(() => {
+    const func = async () => {
+      const storage = getStorage();
+      const reference = ref(storage, firebase.auth().currentUser.uid + '.png');
+      await getDownloadURL(reference).then((x) => {
+        setUrl(x);
+      })
+    }
+
+    if (url == undefined) {func()};
+  }, []);
+
+  
     return(
         <View style={Container.container}>
 
           <FlatList
-          showsVerticalScrollIndicator={true}
+          showsVerticalScrollIndicator={true}   
+          keyExtractor={(item, index) => index.toString()}
           data={dados}
           renderItem={( { item } ) =>{
           return(
-
           <ScrollView>
           <View style={Container.header}>
           
@@ -49,23 +98,18 @@ useEffect(() => {
 
             <View style={Container.headerContent}>
                 <Image style={Container.avatar}
-                  source={{uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzO5Fb637v1B6CAONSt4mGfckCw1gM8tHaJw&usqp=CAU'}}/>
+                  source={{ uri: url }}/>
 
-                  {/*
-                  <TouchableOpacity 
-                  /*onPress={() => ImagePicker.launchImageLibrary({},imagePickerCallback)}*/
-                  /*<Text style={{fontSize: 12,paddingHorizontal: 3, borderWidth: 1, borderRadius: 5, textAlign:"center", top: 20, marginBottom: 21}}>Selecionar foto</Text>
-                  </TouchableOpacity>
-                */}
-                
                   
+                  <TouchableOpacity onPress={pickImage}>
+                    <Text style={{fontSize: 12,paddingHorizontal: 3, borderWidth: 1, borderRadius: 5, textAlign:"center", top: 20, marginBottom: 21}}>Selecionar foto</Text>
+                  </TouchableOpacity>
+                
+                
                   <Text style={Container.name}>{item.nome} </Text>
                   <Text style={Container.userInfo}>{item.email}</Text>
                   <Text style={Container.userInfo}>{item.cidade}</Text>
-                  
-              
-                  
-               
+
             </View>
             {/*<Text style={{color: "#6558f5", textAlign: 'center', bottom: 50, fontSize: 15}}>Centro Universitário de Itajubá - FEPI </Text>*/}
             
@@ -76,16 +120,14 @@ useEffect(() => {
                   <Text style={Container.Texto}>Curso: <Text style={Container.Input}>{item.curso}</Text></Text>
                   <Text style={Container.Texto}>Período: <Text style={Container.Input}>{item.periodo}</Text></Text>
                   <Text style={Container.Texto}>Dias de uso: <Text style={Container.Input}>{item.diasdeuso}</Text></Text>
-               
 
-           
-   
             </View>    
         </ScrollView>
 
           )
         }}
         />
+        
         <View style={Container.LogoBuzz}>
               <Onibus width="15%" height="45" />
               <Text style={Container.TextoLogo}>BUZZ</Text>

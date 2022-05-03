@@ -1,47 +1,40 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import {StyleSheet,Text, View,TouchableOpacity,Image, Alert,ScrollView,FlatList, } from 'react-native';
+import {DrawerActions} from '@react-navigation/native';
 
 
+import firebase from "../../../config/firebaseconfig.js";
 import Icon from 'react-native-vector-icons/Entypo';
 import { styles } from './style';
 
 
-export default class ListaUsuarios extends Component  {
+export default function ListaUsuarios({navigation, route}){
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: [
-        {id:1, name: "Mark Doe",   position:"Estudante",  image:"https://bootdey.com/img/Content/avatar/avatar7.png"},
-        {id:1, name: "John Doe",   position:"Estudante",  image:"https://bootdey.com/img/Content/avatar/avatar1.png"},
-        {id:2, name: "Clark Man",  position:"Estudante",  image:"https://bootdey.com/img/Content/avatar/avatar6.png"} ,
-        {id:3, name: "Jaden Boor", position:"Estudante",  image:"https://bootdey.com/img/Content/avatar/avatar5.png"} ,
-        {id:4, name: "Srick Tree", position:"Estudante",  image:"https://bootdey.com/img/Content/avatar/avatar4.png"} ,
-        {id:5, name: "John Doe",   position:"Estudante",  image:"https://bootdey.com/img/Content/avatar/avatar3.png"} ,
-        {id:6, name: "John Doe",   position:"Estudante",  image:"https://bootdey.com/img/Content/avatar/avatar2.png"} ,
-        {id:8, name: "John Doe",   position:"Estudante",  image:"https://bootdey.com/img/Content/avatar/avatar1.png"} ,
-        {id:9, name: "John Doe",   position:"Estudante",  image:"https://bootdey.com/img/Content/avatar/avatar4.png"} ,
-        {id:9, name: "John Doe",   position:"Estudante",  image:"https://bootdey.com/img/Content/avatar/avatar7.png"} ,
-      ]
-    };
-  }
+  const [dados, setDados] = useState([]);
+  const database = firebase.firestore();
 
-  clickEventListener(item) {
-    Alert.alert(item.name, item.position)
-    
-  }
 
-  render() {
+  
+  useEffect(() => {
+    database.collection("Usuarios").onSnapshot((query) => {
+      const list = [];
+      query.forEach((doc) => {
+        list.push({ ...doc.data(), id: doc.id });
+      }); 
+      setDados(list);
+    });
+  }, [])
+
     return (
       <View style={styles.container}>
           
-        <TouchableOpacity hitSlop={{top: -25, bottom: -10, left: -15, right: -345}} onPress={() => this.props.navigation.openDrawer()}>
+        <TouchableOpacity hitSlop={{top: -25, bottom: -10, left: -15, right: -345}} onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
                 <Icon style={{marginTop: 20, left: 10, width: 50}} name="menu" size={45} color='#6558f5' />    
         </TouchableOpacity>
         
         <FlatList style={styles.list}
           contentContainerStyle={styles.listContainer}
-          data={this.state.data}
+          data={dados}
           horizontal={false}
           numColumns={2}
           keyExtractor= {(item) => {
@@ -49,28 +42,28 @@ export default class ListaUsuarios extends Component  {
           }}
           renderItem={({item}) => {
             return (
-              <TouchableOpacity style={styles.card} onPress={() => {this.clickEventListener(item)}}>
+              <TouchableOpacity style={styles.card} >
                 <View style={styles.cardHeader}>
                   
                 </View>
                 <Image style={styles.userImage} source={{uri:item.image}}/>
                 <View style={styles.cardFooter}>
                   <View style={{alignItems:"center", justifyContent:"center"}}>
-                    <Text style={styles.name}>{item.name}</Text>
-                    <Text style={styles.position}>{item.position}</Text>
-                    <TouchableOpacity style={styles.followButton} onPress={()=> this.clickEventListener(item)}>
+                    <Text style={styles.name}>{item.nome}</Text>
+                    <Text style={styles.position}>{item.email}</Text>
+                    <TouchableOpacity style={styles.followButton} >
                       <Text style={styles.followButtonText}>Ver perfil</Text>  
                     </TouchableOpacity>
                   </View>
                 </View>
               </TouchableOpacity>
+              
             )
           }}/>
         
       </View>
     );
   }
-}
 
 
 /*import React, { useState } from 'react';
@@ -170,7 +163,6 @@ export default function ListaUsuarios({navigation}){
     );
 }
 */
-
 
 
 
