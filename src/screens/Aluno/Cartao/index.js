@@ -21,6 +21,7 @@ const [qrValue, setQrValue] = useState('');
 
 const [dados, setDados] = useState([]);
 const database = firebase.firestore();
+const [url, setUrl] = useState(null);
 
 useEffect(() => {
   database
@@ -32,18 +33,18 @@ useEffect(() => {
     });
 }, []);
 
-const [url, setUrl] = useState();
 
   useEffect(() => {
     const func = async () => {
+      setUrl(result.uri);
       const storage = getStorage();
       const reference = ref(storage, firebase.auth().currentUser.uid + '.png');
-      await getDownloadURL(reference).then((x) => {
-        setUrl(x);
+      await getDownloadURL(reference).then((url) => {
+        setUrl(url);
       })
     }
 
-    if (url == undefined) {func()};
+    if (url == null) {func()};
   }, []);
 
 return(

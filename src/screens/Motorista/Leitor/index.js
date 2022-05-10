@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Children } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, Button, Modal, TouchableOpacity, Image, Animated} from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import Icon from 'react-native-vector-icons/Entypo';
@@ -7,6 +7,8 @@ import firebase from "../../../config/firebaseconfig"
 const ModalPoup = ({visible, children}) => {
   const [showModal, setShowModal] = useState(visible);
   const scaleValue = React.useRef(new Animated.Value(0)).current;
+ 
+
   useEffect(() => {
     toggleModal();
   }, [visible]);
@@ -41,13 +43,13 @@ const ModalPoup = ({visible, children}) => {
 
 export default function Scanner({navigation}) {
 
-  const[visible, setVisible] = useState(false);
-
   const database = firebase.firestore()
 
+  const[visible, setVisible] = useState(false);
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [text, setText] = useState('Ainda não scanneado');
+  const [assento, setAssento] = useState(0);
 
   const askForCameraPermission = () => {
     (async () => {
@@ -64,9 +66,14 @@ export default function Scanner({navigation}) {
   // What happens when we scan the bar code
   const handleBarCodeScanned = ({  data }) => {
 
+    setScanned(true);
+    
     database.collection("UsuariosNoOnibus").doc(data).set({
       usuario: data
     })
+    
+    
+    setAssento(assento + 1);
 
     setVisible(true);
     
@@ -134,7 +141,8 @@ export default function Scanner({navigation}) {
           ))}
         </View>
 
-	    <Text style={{marginVertical: 5, fontSize: 18, textAlign: 'center', fontWeight: 'bold', bottom: 25}}>O aluno foi adicionado ao ônibus!</Text>
+	    <Text style={{marginVertical: 5, fontSize: 18, textAlign: 'center', fontWeight: 'bold', bottom: 5}}>O aluno foi adicionado ao ônibus!</Text>
+      <Text style={{marginVertical: 5, fontSize: 18, textAlign: 'center', fontWeight: 'bold'}}>Lugares ocupados: {assento}</Text>
       
       </ModalPoup>
       <Text style={styles.maintext}>{text}</Text>

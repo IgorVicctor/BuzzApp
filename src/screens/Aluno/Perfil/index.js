@@ -22,6 +22,8 @@ export default function Perfil({navigation}){
 
 const [dados, setDados] = useState([]);
 const database = firebase.firestore();
+const [url, setUrl] = useState(null);
+
 
 useEffect(() => {
   database
@@ -56,7 +58,7 @@ const pickImage = async () => {
   if (!result.cancelled) {
     const storage = getStorage(); //the storage itself
     const variavel = ref(storage, firebase.auth().currentUser.uid + '.png'); //how the image will be addressed inside the storage
-
+    setUrl(result.uri)
     //convert image to array of bytes
     const img = await fetch(result.uri);
     const bytes = await img.blob();
@@ -65,7 +67,6 @@ const pickImage = async () => {
   }
 };
 
-const [url, setUrl] = useState();
 
   useEffect(() => {
     const func = async () => {
@@ -76,7 +77,7 @@ const [url, setUrl] = useState();
       })
     }
 
-    if (url == undefined) {func()};
+    if (url == null) {func()};
   }, []);
 
   
@@ -98,7 +99,7 @@ const [url, setUrl] = useState();
 
             <View style={Container.headerContent}>
                 <Image style={Container.avatar}
-                  source={{ uri: url }}/>
+                  source={{ uri: url ? url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzO5Fb637v1B6CAONSt4mGfckCw1gM8tHaJw&usqp=CAU' }}/>
 
                   
                   <TouchableOpacity onPress={pickImage}>
