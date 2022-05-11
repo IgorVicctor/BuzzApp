@@ -1,27 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { View, SafeAreaView, Text, Image, TouchableOpacity, ScrollView, FlatList} from 'react-native';
 import { Container } from './style';
-
-import Onibus from '../../../img/Onibus.svg';
-import firebase from "../../../config/firebaseconfig.js";
+import { getStorage, ref, getDownloadURL } from 'firebase/storage'; 
 import Icon from 'react-native-vector-icons/Entypo';
-
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage'; 
-
 import QRCode from 'react-native-qrcode-svg';
+import firebase from "../../../config/firebaseconfig.js";
 
-export default function Cartao({navigation}){
+export default function Cartao({navigation}) {
 
-/*function imagePickerCallback(data){
-  console.log(data)
-}*/
-
-/*const [inputText, setInputText] = useState('');*/
 const [qrValue, setQrValue] = useState('');
-
 const [dados, setDados] = useState([]);
-const database = firebase.firestore();
 const [url, setUrl] = useState(null);
+const database = firebase.firestore();
 
 useEffect(() => {
   database
@@ -33,19 +23,16 @@ useEffect(() => {
     });
 }, []);
 
-
-  useEffect(() => {
-    const func = async () => {
-      setUrl(result.uri);
-      const storage = getStorage();
-      const reference = ref(storage, firebase.auth().currentUser.uid + '.png');
-      await getDownloadURL(reference).then((url) => {
-        setUrl(url);
-      })
-    }
-
-    if (url == null) {func()};
-  }, []);
+useEffect(() => {
+  async () => {
+    const storage = getStorage();
+    const reference = ref(storage, firebase.auth().currentUser.uid + '.png');
+    await getDownloadURL(reference).then((x) => {
+      setUrl(x);
+    })
+  }
+ 
+}, []);
 
 return(
   <View style={Container.container}>
@@ -68,17 +55,16 @@ return(
             <Text style={Container.userInfo}>{item.email}</Text>
             <Text style={Container.userInfo}>{item.cidade}</Text>
         </View>          
-        {/*<Text style={{color: "#6558f5", textAlign: 'center', bottom: 50, fontSize: 15}}>Centro Universitário de Itajubá - FEPI </Text>*/}
       </View>
 
       <View style={Container.body}>
           <SafeAreaView>
               <View style={{top: 65}}>
-                  <QRCode
-                      value={qrValue ? qrValue : firebase.auth().currentUser.uid}
-                      size={260}
-                      color="black"
-                      />
+                <QRCode
+                    value={qrValue ? qrValue : firebase.auth().currentUser.uid}
+                    size={260}
+                    color="black"
+                    />
               </View>
           </SafeAreaView> 
       </View>  
@@ -86,7 +72,8 @@ return(
     )
   }}
   />
-</View>    
-);
+
+  </View>    
+  );
 }
 

@@ -1,14 +1,9 @@
 import {React, useState, useEffect} from "react";
-
-import { View, SafeAreaView, StyleSheet, TextInput, TouchableOpacity, Text, Keyboard, Pressable , KeyboardAvoidingView } from "react-native";
+import { View, TextInput, TouchableOpacity, Text, Keyboard, Pressable , KeyboardAvoidingView } from "react-native";
 import { Container } from './style';
-
-import firebase from "../../../config/firebaseconfig"
-
-import Onibus from '../../../img/Onibus.svg';
-import { Circle } from "react-native-svg";
-
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import Onibus from '../../../img/Onibus.svg';
+import firebase from "../../../config/firebaseconfig"
  
 export default function Login({ navigation }) {
 

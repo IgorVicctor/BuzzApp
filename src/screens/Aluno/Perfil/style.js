@@ -30,9 +30,6 @@ export const Container = StyleSheet.create({
     header:{
       height: '60%',
       backgroundColor: "#6558f5",
-
-      
-      
     },
     headerContent:{
       bottom: 55,
@@ -50,7 +47,7 @@ export const Container = StyleSheet.create({
       borderWidth: 4,
       borderColor: "white",
       top: 20,
-      marginBottom: 25,
+      marginBottom: 15,
     },
     name:{
       top: '2%',

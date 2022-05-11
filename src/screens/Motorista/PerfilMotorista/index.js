@@ -41,7 +41,7 @@ export default function PerfilMotorista({navigation}){
             <View style={Container.info}>
               <Text style={Container.Texto}>Empresa:<Text style={Container.Input}> Express Via</Text></Text>
               <Text style={Container.Texto}>Ônibus:<Text style={Container.Input}> Escolar</Text></Text>
-              <Text style={Container.Texto}>.. : <Text style={Container.Input}>..</Text></Text>
+              <Text style={Container.Texto}>Horário: <Text style={Container.Input}> 17 as 00</Text></Text>
               <Text style={Container.Texto}>Dias de uso:<Text style={Container.Input}> Seg/Ter/Qua/Qui/Sex</Text></Text>
             </View>
             
