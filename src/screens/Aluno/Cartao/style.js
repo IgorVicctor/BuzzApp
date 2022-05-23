@@ -15,7 +15,7 @@ export const Container = StyleSheet.create({
         width: 130,
         height: 130,
         borderRadius: 63,
-        borderWidth: 4,
+        borderWidth: 3,
         borderColor: "white",
         marginBottom:10,
         top: 20

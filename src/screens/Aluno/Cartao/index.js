@@ -24,15 +24,16 @@ useEffect(() => {
 }, []);
 
 useEffect(() => {
-  async () => {
+  const func = async () => {
     const storage = getStorage();
     const reference = ref(storage, firebase.auth().currentUser.uid + '.png');
     await getDownloadURL(reference).then((x) => {
       setUrl(x);
     })
   }
- 
+  if (url == null) {func()};
 }, []);
+
 
 return(
   <View style={Container.container}>

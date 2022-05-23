@@ -1,9 +1,12 @@
-import {React, useState} from "react";
+import {React, useState, useEffect} from "react";
 import { Container } from './style';
-import { View, TextInput, TouchableOpacity, Text, Keyboard, Pressable, Alert, ScrollView, KeyboardAvoidingView } from "react-native";
+import { View, TextInput, TouchableOpacity, Text, Keyboard, Pressable, Alert, ScrollView, KeyboardAvoidingView, Image } from "react-native";
 import { CheckBox } from "react-native-elements";
 import firebase from "../../../config/firebaseconfig"
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import Icon from 'react-native-vector-icons/Entypo';
+import * as ImagePicker from 'expo-image-picker';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';  
 
 export default function Cadastro({navigation}) {
 
@@ -20,11 +23,6 @@ export default function Cadastro({navigation}) {
     const[periodo, setPeriodo] = useState("");
     const[diasdeuso, setDiasDeUso] = useState("");
 
-    const [segunda, setSegunda] = useState(false);
-    const [terca, setTerca] = useState(false);
-    const [quarta, setQuarta] = useState(false);
-    const [quinta, setQuinta] = useState(false);
-    const [sexta, setSexta] = useState(false);
 
     const [errorEmail, setErrorEmail] = useState(null)
     const [errorNome, setErrorNome] = useState(null)
@@ -35,6 +33,7 @@ export default function Cadastro({navigation}) {
     const [errorPeriodo, setErrorPeriodo] = useState(null)
     const [isLoading, setLoading] = useState(false)
 
+    const [url, setUrl] = useState(null);
    
     const validar = () => {
         let error = false
@@ -46,93 +45,127 @@ export default function Cadastro({navigation}) {
         setErrorPassword(null)
         setErrorCPassword(null)
         const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-        if (!re.test(String(email).toLowerCase())) {
-            setErrorEmail("Preencha o email corretamente")
-            error = true
-        }
 
-       
-        if (password == null && password != cpass) {
-            setErrorPassword("Preencha com uma senha válida")
-            error = true
-        }
+     
 
+        if (password < 6) {
+            Alert.alert("Atenção", "Preencha com uma senha válida")
+            return false;
+        } 
+        
         if (password != cpass) {
-            setErrorCPassword("As senhas nao coincidem, tente novamente")
-            error = true
+            Alert.alert("Atenção", "As senhas nao coincidem, tente novamente")
+            return false;
         }
 
-        return !error
+        return true;
     }
+
  
-    const registerUser = () =>{
-        firebase.auth().createUserWithEmailAndPassword(email, password)
-            .then((userCredential) => {
-                let user = userCredential.user;
-                database.collection("Usuarios").doc(user.uid).set({
-                    nome: nome,
-                    email: email,
-                    cidade: cidade,
-                    faculdade: faculdade,
-                    curso: curso,
-                    periodo: periodo,
-                    diasdeuso: diasdeuso
-                  })
+    const updateUser = () =>{
+        if(validar()){
+
+        
+        const user = firebase.auth().currentUser;
+        
+        user.updatePassword(password).then(() => {
+        // Update successful.
+        }).catch((error) => {
+        // An error ocurred
+        // ...
+        });
+
+        database.collection("Usuarios").doc(firebase.auth().currentUser.uid).update({
+            nome: nome,
+            senha: password,
+            cidade: cidade,
+            faculdade: faculdade,
+            curso: curso,
+            periodo: periodo,
+            diasdeuso: diasdeuso
+        })
                 
-                navigation.navigate("Perfil", { idUser: user.uid })
-            })
-            .catch((error) => {
-                setErrorRegister(true)
-                let errorCode = error.code;
-                let errorMessage = error.message;
+        Alert.alert('Atenção', 'O perfil foi atualizado com sucesso!', 
+        [{text: "OK", onPress: (() => navigation.navigate("Perfil ")), style: 'cancel'}])
+
+        /*.catch((error) => {
+            setErrorRegister(true)
+            let errorCode = error.code;
+            let errorMessage = error.message;
+        });*/
+        }   
+    } 
+
+    useEffect(() => {
+        (async () => {
+          if (Platform.OS !== 'web') {
+            const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+            if (status !== 'granted') {
+              alert('Sorry, we need camera roll permissions to make this work!');
+            }
+          }
+        })();
+      }, []);
+      
+      useEffect(() => {
+        const func = async () => {
+          const storage = getStorage();
+          const reference = ref(storage, firebase.auth().currentUser.uid + '.png');
+          await getDownloadURL(reference).then((x) => {
+            setUrl(x);
+          })
+        }
+        if (url == null) {func()};
+      }, []);
+      
+      const pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 1,
+        });
+      
+        if (!result.cancelled) {
+          const storage = getStorage(); 
+          const reference = ref(storage, firebase.auth().currentUser.uid + '.png'); 
+          setUrl(result.uri)
+          
+          const img = await fetch(result.uri);
+          const bytes = await img.blob();
+      
+          await uploadBytes(reference, bytes); 
+      
+          getDownloadURL(reference).then((x) => {
+            database.collection("Usuarios").doc(firebase.auth().currentUser.uid).update({
+              image: x
             });
-    }
-
-
-    const clicouLogin = () => {
-        navigation.navigate("Login")
-    }
-
-
-    const clicou = () =>{
-        if(segunda === true){
-            hobbies.push('segunda')
+          })
+          
         }
-        if(terca === true){
-            hobbies.push('terca')
-        }
-        if(quarta === true){
-            hobbies.push('quarta')
-        }
-        if(quinta === true){
-            hobbies.push('quinta')
-        }
-        if(sexta === true){
-            hobbies.push('sexta')
-        }
-
-        Alert.alert("Cadastro", "Foi realizado com sucesso!");
-    }
+      };
 
     return (
         <View style={Container.MainContainer}>
             <ScrollView>
+
+            <TouchableOpacity style={{marginTop: 50, marginLeft: 10}} onPress={() => navigation.openDrawer()}>
+                <Icon  name="menu" size={45} color='#6558f5' />    
+            </TouchableOpacity>
+
             <Pressable onPress={Keyboard.dismiss}>
-            <View style={Container.InputArea}>              
+            <View style={Container.InputArea}>
+
+            <Image style={Container.avatar} source={{ uri: url ? url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzO5Fb637v1B6CAONSt4mGfckCw1gM8tHaJw&usqp=CAU' }}/>
+            <TouchableOpacity onPress={pickImage}>
+                <Text style={{fontSize: 12,paddingHorizontal: 3, borderWidth: 1, borderRadius: 5, textAlign:"center"}}>Atualizar foto</Text>
+            </TouchableOpacity>  
+
                 <View style={Container.InputLogin}>
 
                     <Text style={Container.Texto}>Nome</Text>
                     <TextInput style={Container.input} value={nome} onChangeText={(text) => setNome(text)}/>
-
-                    <Text style={Container.Texto}>Email</Text>
-                    <TextInput style={Container.input} type="text" value={email} onChangeText={value => {
-                                        setErrorNome(null)
-                                        setEmail(value)
-
-                                    }}
-                                    errorMessage={errorEmail}
-                                    />
-
+                    
                     <Text style={Container.Texto}>Senha</Text>
                     <TextInput style={[Container.input, {padding: 6}]} secureTextEntry={true} type="text" value={password} placeholder={"Mínimo 6 caracteres"} onChangeText={value => {
                                         setErrorPassword(null)
@@ -177,30 +210,23 @@ export default function Cadastro({navigation}) {
                         :
                         <View/>
                         }
-                        { email === "" || password === "" || nome === "" || cidade === "" || faculdade === "" || curso === "" || periodo === ""
+                        { password === "" || nome === "" || cidade === "" || faculdade === "" || curso === "" || periodo === ""
                         ?
                             <TouchableOpacity
                             disabled={true}
                             style={Container.botao} 
                             >
-                                <Text style={Container.botaoText}>Cadastrar</Text>
+                                <Text style={Container.botaoText}>Alterar</Text>
                             </TouchableOpacity>
                         :
 
                             <TouchableOpacity
                              style={Container.botao}
-                              onPress={() => { validar(), registerUser() }}
+                              onPress={() => { validar(), updateUser()}}
                               >
-                                <Text style={Container.botaoText}>Cadastrar</Text>
+                                <Text style={Container.botaoText}>Alterar</Text>
                             </TouchableOpacity>
-
                         }
-
-                    <TouchableOpacity style={Container.textoCadastro} onPress={() => {clicouLogin()}}>
-                        <Text style={{color: "#6558f5"}}>Já possui uma conta?</Text>
-                        <Text style={{fontWeight: "bold", color: "#6558f5"}}> Faça login</Text>
-                    </TouchableOpacity>
-
                 </View>           
             </View>
             </Pressable>

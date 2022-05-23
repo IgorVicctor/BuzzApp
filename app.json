@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "App",
+    "name": "Buzz",
     "slug": "App",
+    "icon": "./src/img/Onibus.png",
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"

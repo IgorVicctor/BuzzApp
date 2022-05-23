@@ -1,46 +1,62 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 
-export const Container = StyleSheet.create({
+export const Container = StyleSheet.create(
+    {
         MainContainer: {
             flex: 1,
             backgroundColor: "#fff",
-            justifyContent: "center"
+            justifyContent: "center",
+        },
+        check:{
+            width: "80%",
+            flexDirection: 'row',
+            borderColor: '#ccc',
+            borderWidth: 1,
+            borderRadius: 10
         },
         TextoTitulo:{
             fontSize: 33,
-            marginBottom: 50,
+            marginTop: 80,
+            marginBottom: 40,
             color:"#6558f5",
-            top: 10
         },
         InputArea: {
             /*flex: 1,*/
             /*backgroundColor: "#fff",*/
-            margin: 15,
+            margin: 25,
             alignItems: "center",
+            
         },
         input:{
-            padding: 10, 
-            marginTop:10,
+            top: 10,
+            /*padding: 10, */
+            marginTop:1,
             width: 275,
-            height: 45,
-            color: '#6558f5',
+            height: 35,
             borderColor: '#dfe6ed',
             fontSize: 16,
             fontWeight: 'bold',
             borderRadius: 4,
             borderWidth: 2,
-            margin: "-4%"
+            margin: "-4%",
+            
           },
         InputLogin:{
             alignItems: "center",
+            bottom: 15
+                 
         },
         Texto:{
-            color:"#6558f5",
-            fontSize:25,
-            marginRight: 200,
-            marginTop: 15,
             top: 10,
+            color:"#6558f5",
+            fontSize:22,
+            /*marginRight: 200,*/
+            marginTop: 20,
+            textAlign: 'auto',
+            width: 275,
+    
+            
         },
         botaoText:{
             fontSize: 17,
@@ -48,17 +64,17 @@ export const Container = StyleSheet.create({
             color: '#fff'
         },
         botao:{
-            width: 80,
+            width: 100,
             height: 42,
             backgroundColor: '#6558f5',
-            marginTop: 33,
+            marginTop: 20,
             borderRadius: 3,
             alignItems: 'center',
             justifyContent: 'center'
         },
         textoCadastro:{
             justifyContent:"center",
-            marginTop: 25,
+            marginTop: 20,
             fontSize: 17,
             flexDirection: "row",     
         },
@@ -68,7 +84,7 @@ export const Container = StyleSheet.create({
             width: "100%",
             flexDirection: "row",
             alignItems: "center",
-            justifyContent: "center",      
+            justifyContent: "center",    
         },
         TextoLogo: {
             color: "#6558f5",
@@ -76,7 +92,6 @@ export const Container = StyleSheet.create({
             flexDirection: "row",
         },
         contentAlert:{
-            top: 5,
             marginTop: 20,
             flexDirection: "row",
             justifyContent: "center",
@@ -86,6 +101,21 @@ export const Container = StyleSheet.create({
             paddingLeft: 10,
             color: "red",
             fontSize: 16
-        }
+        },
+        avatar: {
+            width: 130,
+            height: 130,
+            borderRadius: 63,
+            borderWidth: 1,
+            borderColor: "#6558f5",
+            bottom: 20,
+          },
+          touchMenu:{
+            marginTop:40,
+            backgroundColor:'#6558f5',
+            width:50,
+            height:50,
+            zIndex:999
+          },
     }
 )

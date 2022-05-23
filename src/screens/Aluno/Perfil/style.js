@@ -44,7 +44,7 @@ export const Container = StyleSheet.create({
       width: 130,
       height: 130,
       borderRadius: 63,
-      borderWidth: 4,
+      borderWidth: 3,
       borderColor: "white",
       top: 20,
       marginBottom: 15,
@@ -78,9 +78,8 @@ export const Container = StyleSheet.create({
       width:'90%',
       alignItems: 'flex-start',
       justifyContent: 'center',
-      backgroundColor: '#ccc',
       left:'5%',
-
+      bottom: 10
     },
     LogoBuzz: {
       height: "15%",
@@ -88,7 +87,7 @@ export const Container = StyleSheet.create({
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "center",
-      bottom: 30,
+      bottom: 40,
     },
     TextoLogo: {
       color: "#6558f5",

@@ -8,8 +8,8 @@ export const styles = StyleSheet.create({
       justifyContent: 'center',
     },
     maintext: {
-      fontSize: 16,
-      margin: 20,
+      fontSize: 14,
+      margin: 10,
     },
     barcodebox: {
       alignItems: 'center',

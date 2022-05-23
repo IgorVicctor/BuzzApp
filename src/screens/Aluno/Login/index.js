@@ -7,6 +7,8 @@ import firebase from "../../../config/firebaseconfig"
  
 export default function Login({ navigation }) {
 
+    const database = firebase.firestore()
+
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [errorLogin, setErrorLogin] = useState("")
@@ -14,8 +16,32 @@ export default function Login({ navigation }) {
     const loginFirebase = ()=>{
         firebase.auth().signInWithEmailAndPassword(email, password)
             .then((userCredential) => {
-                let user = userCredential.user;         
-                navigation.navigate("Perfil", { idUser: user.uid })  
+
+                let user = userCredential.user;
+                let uid = user.uid;         
+                    database
+                        .collection("Usuarios")
+                        .doc(uid)
+                        .get()
+                        .then((teste) => {
+                        if(teste.exists){   
+                            navigation.navigate("Perfil", { idUser: user.uid })
+                            
+                        } else {
+                        database
+                            .collection("Motoristas")
+                            .doc(uid)
+                            .get()
+                            .then((doc) => {
+                                if(doc.exists){
+                                    navigation.navigate("PerfilMotorista", { idUser: user.uid })
+                                } else {
+                                    Alert.alert("Atenção", "Usuário não encontrado.")
+                                }
+                            });     
+                        }    
+                    })
+                 
             })
             .catch((error) => {
                 setErrorLogin(true)
@@ -24,42 +50,35 @@ export default function Login({ navigation }) {
             });
     }
     
-
     useEffect(()=>{
         firebase.auth().onAuthStateChanged((user) => {
-            if (user) {
-              
-            navigation.navigate("Perfil", { idUser: user.uid })
-            var uid = user.uid; 
-            
+            if (user) {     
+                let uid = user.uid;      
+                database
+                        .collection("Usuarios")
+                        .doc(uid)
+                        .get()
+                        .then((teste) => {
+                        if(teste.exists){   
+                            navigation.navigate("Perfil", { idUser: user.uid })
+                            
+                        } else {
+                        database
+                            .collection("Motoristas")
+                            .doc(uid)
+                            .get()
+                            .then((doc) => {
+                                if(doc.exists){
+                                    navigation.navigate("PerfilMotorista", { idUser: user.uid })
+                                } else {
+                                    Alert.alert("Atenção", "Usuário não encontrado.")
+                                }
+                            });     
+                        }    
+                    }) 
             } 
-          });
-          
+          });      
     }, []);
-
-    const clicouCadastro = () => {
-        /*navigation.navigate("Cadastro")*/
-        navigation.reset({
-            index: 0,
-            routes: [{ name: "Cadastro" }]
-        })
-    }
-
-    const clicou = () => {
-        /*navigation.navigate('Cartao')*/
-        navigation.reset({
-            index: 0,
-            routes: [{ name: "Perfil" }]
-        })
-    }
-
-    const clicouLoginMotorista = () => {
-        /*navigation.navigate('Cartao')*/
-        navigation.reset({
-            index: 0,
-            routes: [{ name: "LoginMotorista" }]
-        })
-    }
 
     return (
         <View style={Container.MainContainer}>
@@ -111,16 +130,11 @@ export default function Login({ navigation }) {
                             </TouchableOpacity>
                         }
 
-                        
-
-                        <TouchableOpacity style={Container.textoCadastro} onPress={() => clicouCadastro()}>
+                        <TouchableOpacity style={Container.textoCadastro} onPress={() => navigation.navigate("Cadastro")}>
                             <Text style={{ color: "#6558f5" }}>Ainda não possui uma conta?</Text>
                             <Text style={{ fontWeight: "bold", color: "#6558f5" }}> Cadastre-se</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={[Container.textoCadastro, {bottom: 10}]} onPress={() => clicouLoginMotorista()}>
-                            <Text style={{ color: "#6558f5" }}>Fazer login como<Text style={{fontWeight: 'bold'}}> Motorista</Text></Text>
-                        </TouchableOpacity>
                     </View>
                 </View>
 

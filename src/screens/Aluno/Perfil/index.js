@@ -97,8 +97,7 @@ const pickImage = async () => {
                   <Text style={Container.userInfo}>{item.cidade}</Text>
             </View>  
             </View>
-            <View style={Container.info}>
-           
+            <View style={Container.info}>    
                   <Text style={Container.Texto}>Faculdade: <Text style={Container.Input}>{item.faculdade}</Text></Text>
                   <Text style={Container.Texto}>Curso: <Text style={Container.Input}>{item.curso}</Text></Text>
                   <Text style={Container.Texto}>Período: <Text style={Container.Input}>{item.periodo}</Text></Text>
@@ -112,6 +111,7 @@ const pickImage = async () => {
               <Onibus width="15%" height="45" />
               <Text style={Container.TextoLogo}>BUZZ</Text>
         </View>
+      
       </View>    
     );
 }

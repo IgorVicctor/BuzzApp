@@ -1,5 +1,6 @@
 import React, { cloneElement } from 'react';
 import { StyleSheet } from "react-native";
+import { useTheme } from '@react-navigation/native';
 
 export const Container = StyleSheet.create({
     container:{
@@ -30,9 +31,6 @@ export const Container = StyleSheet.create({
     header:{
       height: '60%',
       backgroundColor: "#6558f5",
-
-      
-      
     },
     headerContent:{
       bottom: 55,
@@ -50,7 +48,7 @@ export const Container = StyleSheet.create({
       borderWidth: 4,
       borderColor: "white",
       top: 20,
-      marginBottom: 25,
+      marginBottom: 15,
     },
     name:{
       top: '2%',
@@ -81,9 +79,8 @@ export const Container = StyleSheet.create({
       width:'90%',
       alignItems: 'flex-start',
       justifyContent: 'center',
-      backgroundColor: '#ccc',
       left:'5%',
-
+      bottom: 10
     },
     LogoBuzz: {
       height: "15%",
@@ -91,7 +88,7 @@ export const Container = StyleSheet.create({
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "center",
-      bottom: 30,
+      bottom: 40,
     },
     TextoLogo: {
       color: "#6558f5",

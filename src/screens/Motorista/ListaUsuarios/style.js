@@ -1,5 +1,4 @@
-import React from 'react';
-import { StyleSheet, ActivityIndicator } from "react-native";
+import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
         container:{
@@ -89,5 +88,40 @@ export const styles = StyleSheet.create({
         icon:{
           height: 20,
           width: 20, 
-        }
+        },
+        modalBackGround: {
+          flex: 1,
+          backgroundColor: 'rgba(0,0,0,0.5)',
+          justifyContent: "center",
+          alignItems: "center"
+        },
+        modalContainer: {
+          width: '90%',
+          height: 315,
+          backgroundColor: "white",
+          paddingHorizontal: 20,
+          paddingVertical: 30,
+          borderRadius: 20,
+          elevation: 20
+        }, 
+        header: {
+          bottom: 10,
+          width: '100%',
+          height: 570,
+          alignItems: 'flex-end',
+          justifyContent: 'center',
+        },       
+        Texto:{
+          fontSize:20,
+          fontWeight: 'bold',
+          padding: 5,
+          color: "#6558f5",
+          alignItems: 'center',
+        },
+        Input:{
+          fontSize:20,
+          color: '#000'
+        },
       });    
+
+      
