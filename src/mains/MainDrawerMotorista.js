@@ -1,12 +1,9 @@
 import React from 'react'
 import { View} from 'react-native';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList,DrawerItem } from '@react-navigation/drawer';
-import { TouchableRipple, Switch, Drawer } from 'react-native-paper';
-
+import { Drawer } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-
 import firebase from "../config/firebaseconfig"
-
 import PerfilMotorista from '../screens/Motorista/PerfilMotorista';
 import ListaUsuarios from '../screens/Motorista/ListaUsuarios';
 import Leitor from '../screens/Motorista/Leitor';
@@ -41,10 +38,6 @@ function CustomDrawerContent(props) {
       <DrawerContentScrollView {...props}  >
       <Drawer.Section style={{flex: 1, marginTop: 15, }}>
         <DrawerItemList {...props} />
-          {/*<DrawerItem
-            label="Ônibus"
-            onPress={() => {}}
-          />*/}
       </Drawer.Section>
       
       </DrawerContentScrollView>
@@ -70,4 +63,3 @@ function CustomDrawerContent(props) {
      </View>
   );
 }
-

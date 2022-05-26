@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import {Text, View, TouchableOpacity, Image, FlatList, TextInput, Modal, Animated} from 'react-native';
+import {Text, View, TouchableOpacity, Image, FlatList, TextInput, Modal, Animated, Alert} from 'react-native';
 import { styles } from './style';
 import {DrawerActions} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Entypo';
 import firebase from "../../../config/firebaseconfig.js";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-{/*
 const ModalPoup = ({visible, children}) => {
   const [showModal, setShowModal] = useState(visible);
   const scaleValue = React.useRef(new Animated.Value(0)).current;
   
- 
   useEffect(() => {
     toggleModal();
   }, [visible]);
@@ -43,7 +41,7 @@ const ModalPoup = ({visible, children}) => {
   </Modal>
   )
 };
-*/}
+
 export default function ListaUsuarios({navigation, route}){
 
   const database = firebase.firestore();
@@ -52,6 +50,7 @@ export default function ListaUsuarios({navigation, route}){
   const [dados2, setDados2] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [list, setList] = useState();
+  const [idItem, setIdItem] = useState();
 
 
   useEffect(() => {
@@ -92,6 +91,7 @@ export default function ListaUsuarios({navigation, route}){
         .doc(item.id)
         .get()
         .then((doc) => {
+          setIdItem(item.id);
           setDados2([doc.data()]);
         });      
     }
@@ -123,7 +123,7 @@ export default function ListaUsuarios({navigation, route}){
             </TouchableOpacity>
           </View>
         </View>
-        {/*
+
         <ModalPoup visible={visible}> 
             <View style={{alignItems: 'center'}}>
               <View style={styles.header}>
@@ -150,13 +150,36 @@ export default function ListaUsuarios({navigation, route}){
                           <Text style={styles.Texto}>Curso: <Text style={styles.Input}>{item.curso}</Text></Text>
                           <Text style={styles.Texto}>Período: <Text style={styles.Input}>{item.periodo}</Text></Text>
                           <Text style={styles.Texto}>Dias de uso: <Text style={styles.Input}>{item.diasdeuso}</Text></Text>
+                          
+                          <TouchableOpacity style={[styles.followButton, {left: 110}]} onPress={() => Alert.alert(
+                            "Atenção", 
+                            "Voce deseja excluir " + item.nome + "?",
+                            [             
+                              {
+                                text: "SIM",
+                                onPress: (() =>            
+                                {database
+                                  .collection("Usuarios")
+                                  .doc(idItem)
+                                  .delete(), 
+                                  setVisible(false)
+                              }),           
+                                style: "cancel",
+                              },            
+                              {text: "NÃO",
+                              style: "cancel"
+                            },
+                            ],   
+                            )}>
+                            <Text style={styles.followButtonText}>Excluir</Text>  
+                          </TouchableOpacity>
                     </View>    
                   )
                 }}
                 /> 
             </View>
         </ModalPoup>
-        */}
+
 
         <FlatList style={styles.list}
           contentContainerStyle={styles.listContainer}

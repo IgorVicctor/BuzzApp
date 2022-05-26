@@ -34,7 +34,6 @@ useEffect(() => {
   if (url == null) {func()};
 }, []);
 
-
 return(
   <View style={Container.container}>
     <FlatList
@@ -77,4 +76,3 @@ return(
   </View>    
   );
 }
-

@@ -95,7 +95,3 @@ export const Container = StyleSheet.create({
       flexDirection: "row",
     },
 });
-
-
-
-

@@ -1,4 +1,3 @@
-import React from 'react';
 import { StyleSheet, ActivityIndicator } from "react-native";
 
 export const Container = StyleSheet.create({
@@ -76,7 +75,3 @@ export const Container = StyleSheet.create({
         flexDirection: "row",
       },  
 });
-
-
-
-

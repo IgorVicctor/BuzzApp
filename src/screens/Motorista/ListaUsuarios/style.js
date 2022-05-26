@@ -97,7 +97,7 @@ export const styles = StyleSheet.create({
         },
         modalContainer: {
           width: '90%',
-          height: 315,
+          height: 350,
           backgroundColor: "white",
           paddingHorizontal: 20,
           paddingVertical: 30,
@@ -122,6 +122,4 @@ export const styles = StyleSheet.create({
           fontSize:20,
           color: '#000'
         },
-      });    
-
-      
+  }); 

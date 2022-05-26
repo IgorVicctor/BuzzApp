@@ -11,7 +11,7 @@ export default function Preload ({navigation}) {
                 index: 0,
                 routes: [{name: "Login"}]
             })
-        }, 1500)
+        }, 1350)
     }, [])
       
 return (

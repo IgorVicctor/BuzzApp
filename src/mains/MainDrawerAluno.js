@@ -1,27 +1,15 @@
 import React from 'react'
-import { View, Text} from 'react-native';
+import { View } from 'react-native';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList,DrawerItem } from '@react-navigation/drawer';
-import { TouchableRipple, Switch, Drawer } from 'react-native-paper';
-import { Provider as PaperProvider, DarkTheme as PaperDarkTheme } from 'react-native-paper';
-
+import { Drawer } from 'react-native-paper';
+import { Provider as PaperProvider } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-
 import firebase from "../config/firebaseconfig"
-
 import Cartao from '../screens/Aluno/Cartao';
 import Perfil from '../screens/Aluno/Perfil';
 import AlterarDados from '../screens/Aluno/AlterarDados';
 
 const Draweer = createDrawerNavigator();
-
-
- /*function logout() {
-  firebase.auth().signOut().then(() => {
-    props.navigation.navigate('Login')
-  }).catch((error) => {
-    // An error happened.
-  });
- }*/
 
 function DrawerRoutes() {
   return (
@@ -52,12 +40,8 @@ function CustomDrawerContent(props) {
       <DrawerContentScrollView {...props}  >
       <Drawer.Section style={{flex: 1, marginTop: 15, }}>
         <DrawerItemList {...props} />
-          {/*<DrawerItem
-            label="Alterar dados"
-            onPress={() => props.navigation.navigate("AlterarDados")}
-          />*/}
       </Drawer.Section>
-      
+
       </DrawerContentScrollView>
 
       <Drawer.Section style={{marginBottom: 15, borderTopColor: '#f4f4f4', borderTopWidth: 1}}>   
@@ -81,4 +65,3 @@ function CustomDrawerContent(props) {
      </View>
   );
 }
-

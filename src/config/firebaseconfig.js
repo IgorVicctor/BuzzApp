@@ -3,7 +3,6 @@ import "firebase/compat/storage";
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 
-
 const firebaseConfig = {
     apiKey: "AIzaSyBYHvj1B0B8OFiOuPV85Poo0MG8K4YZ640",
     authDomain: "fir-buzz-380c4.firebaseapp.com",
@@ -18,4 +17,3 @@ const firebaseConfig = {
   firebase.initializeApp(firebaseConfig)
  
   export default firebase;
-  

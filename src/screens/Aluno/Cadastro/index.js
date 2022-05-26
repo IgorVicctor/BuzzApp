@@ -1,14 +1,12 @@
 import {React, useState} from "react";
 import { Container } from './style';
 import { View, TextInput, TouchableOpacity, Text, Keyboard, Pressable, Alert, ScrollView, KeyboardAvoidingView } from "react-native";
-import { CheckBox } from "react-native-elements";
 import firebase from "../../../config/firebaseconfig"
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 export default function Cadastro({navigation}) {
 
-    const database = firebase.firestore()
-    
+    const database = firebase.firestore()  
     const[email, setEmail] = useState("");
     const[password, setPassword] = useState("");
     const [cpass, setCpass] = useState(null)
@@ -19,23 +17,10 @@ export default function Cadastro({navigation}) {
     const[curso, setCurso] = useState("");
     const[periodo, setPeriodo] = useState("");
     const[diasdeuso, setDiasDeUso] = useState("");
-
-    const [segunda, setSegunda] = useState(false);
-    const [terca, setTerca] = useState(false);
-    const [quarta, setQuarta] = useState(false);
-    const [quinta, setQuinta] = useState(false);
-    const [sexta, setSexta] = useState(false);
-
     const [errorEmail, setErrorEmail] = useState(null)
-    const [errorNome, setErrorNome] = useState(null)
     const [errorPassword, setErrorPassword] = useState(null)
     const [errorCPassword, setErrorCPassword] = useState(null)
-    const [errorFaculdade, setErrorFaculdade] = useState(null)
-    const [errorCurso, setErrorCurso] = useState(null)
-    const [errorPeriodo, setErrorPeriodo] = useState(null)
-    const [isLoading, setLoading] = useState(false)
 
-   
     const validar = () => {
         let error = false
         setErrorPeriodo(null)
@@ -52,14 +37,14 @@ export default function Cadastro({navigation}) {
         }
 
        
-        if (password == null && password != cpass) {
-            setErrorPassword("Preencha com uma senha válida")
-            error = true
-        }
-
+        if (password < 6) {
+            Alert.alert("Atenção", "Preencha com uma senha válida")
+            return false;
+        } 
+        
         if (password != cpass) {
-            setErrorCPassword("As senhas nao coincidem, tente novamente")
-            error = true
+            Alert.alert("Atenção", "As senhas nao coincidem, tente novamente")
+            return false;
         }
 
         return !error
@@ -134,14 +119,14 @@ export default function Cadastro({navigation}) {
                                     />
 
                     <Text style={Container.Texto}>Senha</Text>
-                    <TextInput style={[Container.input, {padding: 6}]} secureTextEntry={true} type="text" value={password} placeholder={"Mínimo 6 caracteres"} onChangeText={value => {
+                    <TextInput style={Container.input} secureTextEntry={true} type="text" value={password} placeholder={"Mínimo 6 caracteres"} onChangeText={value => {
                                         setErrorPassword(null)
                                         setPassword(value)
                                     }}
                                     errorMessage={errorPassword}  />
 
                     <Text style={Container.Texto}>Confirmar senha</Text>
-                    <TextInput style={[Container.input, {padding: 6}]} placeholder={"Mínimo 6 caracteres"} secureTextEntry={true} 
+                    <TextInput style={Container.input} placeholder={"Mínimo 6 caracteres"} secureTextEntry={true} 
                                     onChangeText={value => {
 
                                         setErrorCPassword(null)
@@ -162,7 +147,7 @@ export default function Cadastro({navigation}) {
                     <TextInput style={Container.input} value={periodo} onChangeText={(text) => setPeriodo(text)}/>
 
                     <Text style={Container.Texto}>Dias de Uso:</Text>
-                    <TextInput style={[Container.input, {marginBottom: 5, padding: 6}]} value={diasdeuso} placeholder={"Ex.: Seg/Qua/Sex"} onChangeText={(text) => setDiasDeUso(text)}/>
+                    <TextInput style={[Container.input, {marginBottom: 5}]} value={diasdeuso} placeholder={"Ex.: Seg/Qua/Sex"} onChangeText={(text) => setDiasDeUso(text)}/>
 
                     {errorRegister === true
                         ?
@@ -197,8 +182,7 @@ export default function Cadastro({navigation}) {
                         }
 
                     <TouchableOpacity style={Container.textoCadastro} onPress={() => {clicouLogin()}}>
-                        <Text style={{color: "#6558f5"}}>Já possui uma conta?</Text>
-                        <Text style={{fontWeight: "bold", color: "#6558f5"}}> Faça login</Text>
+                        <Text style={Container.textoCadastro}>Já possui uma conta? Faça login</Text>
                     </TouchableOpacity>
 
                 </View>           

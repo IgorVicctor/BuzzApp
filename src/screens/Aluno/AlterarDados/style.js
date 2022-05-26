@@ -1,4 +1,3 @@
-import React from "react";
 import { StyleSheet } from "react-native";
 
 export const Container = StyleSheet.create(
@@ -22,55 +21,49 @@ export const Container = StyleSheet.create(
             color:"#6558f5",
         },
         InputArea: {
-            /*flex: 1,*/
-            /*backgroundColor: "#fff",*/
+            flex: 1,
             margin: 25,
             alignItems: "center",
             
         },
         input:{
             top: 10,
-            /*padding: 10, */
+            padding: 6,
             marginTop:1,
-            width: 275,
+            width: 366,
             height: 35,
-            borderColor: '#dfe6ed',
+            borderColor: '#000',
             fontSize: 16,
             fontWeight: 'bold',
-            borderRadius: 4,
-            borderWidth: 2,
             margin: "-4%",
-            
+            borderBottomWidth: 1,
+            fontSize: 16,       
           },
         InputLogin:{
             alignItems: "center",
-            bottom: 15
-                 
+            bottom: 15              
         },
         Texto:{
             top: 10,
             color:"#6558f5",
             fontSize:22,
-            /*marginRight: 200,*/
-            marginTop: 20,
+            marginTop: 30,
             textAlign: 'auto',
-            width: 275,
-    
-            
+            width: 365
         },
         botaoText:{
-            fontSize: 17,
-            fontWeight: 'bold',
-            color: '#fff'
+            color: "#FFF",
+            fontSize: 18,
+            fontWeight: 'bold'
         },
         botao:{
-            width: 100,
-            height: 42,
             backgroundColor: '#6558f5',
-            marginTop: 20,
-            borderRadius: 3,
-            alignItems: 'center',
-            justifyContent: 'center'
+            width: 355,
+            borderRadius: 6,
+            paddingVertical: 8,
+            marginTop: 18,
+            justifyContent: 'center',
+            alignItems: 'center'
         },
         textoCadastro:{
             justifyContent:"center",

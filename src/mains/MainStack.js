@@ -1,16 +1,13 @@
 import React from 'react';
 import { createStackNavigator} from '@react-navigation/stack';
-
 import Preload from '../screens/Preload';
 import Login from '../screens/Aluno/Login';
 import Cadastro from '../screens/Aluno/Cadastro';
 import Leitor from '../screens/Motorista/Leitor';
 import ListaUsuarios from '../screens/Motorista/ListaUsuarios';
 import AlterarDados from '../screens/Aluno/AlterarDados'
-
 import DrawerRoutesAluno from './MainDrawerAluno';
 import DrawerRoutesMotorista from './MainDrawerMotorista';
-
 
 const Stack = createStackNavigator();
 

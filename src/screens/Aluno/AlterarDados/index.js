@@ -1,7 +1,6 @@
 import {React, useState, useEffect} from "react";
 import { Container } from './style';
 import { View, TextInput, TouchableOpacity, Text, Keyboard, Pressable, Alert, ScrollView, KeyboardAvoidingView, Image } from "react-native";
-import { CheckBox } from "react-native-elements";
 import firebase from "../../../config/firebaseconfig"
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Icon from 'react-native-vector-icons/Entypo';
@@ -11,8 +10,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 export default function Cadastro({navigation}) {
 
     const database = firebase.firestore()
-    
-    const[email, setEmail] = useState("");
+  
     const[password, setPassword] = useState("");
     const [cpass, setCpass] = useState(null)
     const[errorRegister, setErrorRegister] = useState("")
@@ -22,17 +20,8 @@ export default function Cadastro({navigation}) {
     const[curso, setCurso] = useState("");
     const[periodo, setPeriodo] = useState("");
     const[diasdeuso, setDiasDeUso] = useState("");
-
-
-    const [errorEmail, setErrorEmail] = useState(null)
-    const [errorNome, setErrorNome] = useState(null)
     const [errorPassword, setErrorPassword] = useState(null)
     const [errorCPassword, setErrorCPassword] = useState(null)
-    const [errorFaculdade, setErrorFaculdade] = useState(null)
-    const [errorCurso, setErrorCurso] = useState(null)
-    const [errorPeriodo, setErrorPeriodo] = useState(null)
-    const [isLoading, setLoading] = useState(false)
-
     const [url, setUrl] = useState(null);
    
     const validar = () => {
@@ -45,8 +34,6 @@ export default function Cadastro({navigation}) {
         setErrorPassword(null)
         setErrorCPassword(null)
         const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-
-     
 
         if (password < 6) {
             Alert.alert("Atenção", "Preencha com uma senha válida")
@@ -61,11 +48,9 @@ export default function Cadastro({navigation}) {
         return true;
     }
 
- 
     const updateUser = () =>{
         if(validar()){
-
-        
+  
         const user = firebase.auth().currentUser;
         
         user.updatePassword(password).then(() => {
@@ -87,12 +72,6 @@ export default function Cadastro({navigation}) {
                 
         Alert.alert('Atenção', 'O perfil foi atualizado com sucesso!', 
         [{text: "OK", onPress: (() => navigation.navigate("Perfil ")), style: 'cancel'}])
-
-        /*.catch((error) => {
-            setErrorRegister(true)
-            let errorCode = error.code;
-            let errorMessage = error.message;
-        });*/
         }   
     } 
 
@@ -140,8 +119,7 @@ export default function Cadastro({navigation}) {
             database.collection("Usuarios").doc(firebase.auth().currentUser.uid).update({
               image: x
             });
-          })
-          
+          })        
         }
       };
 
@@ -163,7 +141,7 @@ export default function Cadastro({navigation}) {
 
                 <View style={Container.InputLogin}>
 
-                    <Text style={Container.Texto}>Nome</Text>
+                    <Text style={[Container.Texto, {marginTop: 10}]}>Nome</Text>
                     <TextInput style={Container.input} value={nome} onChangeText={(text) => setNome(text)}/>
                     
                     <Text style={Container.Texto}>Senha</Text>

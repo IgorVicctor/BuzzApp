@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { View,  TouchableOpacity, Text, Image, ScrollView, FlatList} from 'react-native';
+import { View,  TouchableOpacity, Text, Image, ScrollView, FlatList } from 'react-native';
 import { Container } from './style';
 import * as ImagePicker from 'expo-image-picker';
 import Onibus from '../../../img/Onibus.svg';
